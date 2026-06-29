@@ -22,12 +22,15 @@ public class Cart extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+            mappedBy = "cart",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     @Builder.Default
     private List<CartItem> items = new ArrayList<>();
 
     @Column(nullable = false)
     @Builder.Default
     private BigDecimal totalAmount = BigDecimal.ZERO;
-
 }

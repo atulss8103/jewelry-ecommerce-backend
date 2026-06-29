@@ -16,12 +16,12 @@ import java.math.BigDecimal;
 @Table(name = "cart_items")
 public class CartItem extends BaseEntity {
 
-    @ManyToOne
-    @JoinColumn(name = "cart_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cart_id", nullable = false)
     private Cart cart;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
     @Column(nullable = false)
@@ -32,5 +32,4 @@ public class CartItem extends BaseEntity {
 
     @Column(nullable = false)
     private BigDecimal totalPrice;
-
 }
