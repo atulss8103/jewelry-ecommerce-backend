@@ -5,12 +5,15 @@ import com.atul.jewelry.auth.dto.response.AuthResponse;
 import com.atul.jewelry.auth.entity.User;
 import com.atul.jewelry.auth.repository.UserRepository;
 import com.atul.jewelry.auth.service.AuthService;
+import com.atul.jewelry.cart.repository.CartRepository;
 import com.atul.jewelry.enums.Role;
+import com.atul.jewelry.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.atul.jewelry.auth.dto.request.LoginRequest;
 import com.atul.jewelry.auth.dto.response.LoginResponse;
+import com.atul.jewelry.cart.entity.Cart;
 
 @Service
 @RequiredArgsConstructor
@@ -18,12 +21,14 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CartRepository cartRepository;
+
 
     @Override
     public AuthResponse register(RegisterRequest request) {
 
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email already exists");
+            throw new BadRequestException("Email already exists");
         }
 
         if (userRepository.existsByPhone(request.getPhone())) {
@@ -41,6 +46,13 @@ public class AuthServiceImpl implements AuthService {
                 .build();
 
         userRepository.save(user);
+
+        Cart cart = Cart.builder()
+                .user(user)
+                .build();
+
+        cartRepository.save(cart);
+
 
         return AuthResponse.builder()
                 .message("User Registered Successfully")

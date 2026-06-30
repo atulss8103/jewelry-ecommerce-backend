@@ -1,5 +1,6 @@
 package com.atul.jewelry.cart.service;
 
+import com.atul.jewelry.auth.entity.User;
 import com.atul.jewelry.cart.dto.request.AddToCartRequest;
 import com.atul.jewelry.cart.dto.request.UpdateQuantityRequest;
 import com.atul.jewelry.cart.dto.response.CartResponse;
@@ -8,14 +9,14 @@ import java.util.UUID;
 
 public interface CartService {
 
-    CartResponse addToCart(UUID userId, AddToCartRequest request);
+    CartResponse addToCart(User user, AddToCartRequest request);
 
-    CartResponse getCart(String userEmail);
+    CartResponse getCart(User user);
 
-    CartResponse updateQuantity(String userEmail, UpdateQuantityRequest request);
+    CartResponse updateQuantity(User user, UpdateQuantityRequest request);
 
-    void removeItem(String userEmail, String cartItemId);
+    void removeItem(User user, UUID cartItemId);
 
-    void clearCart(String userEmail);
+    void clearCart(User user);
 
 }
